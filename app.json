@@ -25,6 +25,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "Simple Scheduler app",
+    "githubUrl": "https://github.com/ParkourKarthik/simplescheduler"
   }
 }
