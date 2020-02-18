@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#1e90ff',
     alignItems: 'center',
     flexDirection: 'row',
-    fontSize: 60,
     paddingLeft: 10,
   },
   backBtn: {
