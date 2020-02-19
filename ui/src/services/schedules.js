@@ -1,6 +1,5 @@
 import config from "../config";
 
-
 export const GetAll = () => {
   return callApi("schedules");
 };
@@ -36,6 +35,7 @@ const callApi = (endpoint, options = { method: "get" }) => {
       return res.text();
     })
     .then(text => {
+      console.log("text", text);
       return JSON.parse(text);
     });
 };
