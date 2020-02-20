@@ -33,13 +33,13 @@ export default class App extends Component {
             <Scheduler onClick={this.onIsHomeChange} />
           )}
         </View>
-        <View style={this.state.isHome ? styles.addBtnHolder : styles.hide}>
+        <View style={styles.addBtnHolder}>
           <TouchableOpacity
             style={styles.addBtn}
-            onPress={() => this.onIsHomeChange(false)}
+            onPress={() => this.onIsHomeChange(!this.state.isHome)}
           >
             {/* <Text style={styles.addTxt}>+</Text> */}
-            <PlusIcon />
+            {this.state.isHome ? <PlusIcon /> : <TickIcon />}
           </TouchableOpacity>
         </View>
       </View>
@@ -52,6 +52,15 @@ const PlusIcon = () => {
     <>
       <View style={styles.horizontal} />
       <View style={styles.vertical} />
+    </>
+  );
+};
+
+const TickIcon = () => {
+  return (
+    <>
+      <View style={styles.short} />
+      <View style={styles.long} />
     </>
   );
 };
@@ -102,6 +111,23 @@ const styles = StyleSheet.create({
   vertical: {
     ...plusBtn,
     position: "absolute",
-    transform: "rotate(90deg)",
+    transform: "rotate(90deg)"
+  },
+  short: {
+    height: "5px",
+    marginTop: "35px",
+    marginLeft: "-30px",
+    width: "15px",
+    backgroundColor: "black",
+    transform: "rotate(45deg)"
+  },
+  long: {
+    position: "absolute",
+    height: "5px",
+    marginTop: "30px",
+    marginLeft: "5px",
+    transform: "rotate(135deg)",
+    width: "40px",
+    backgroundColor: "black"
   }
 });
