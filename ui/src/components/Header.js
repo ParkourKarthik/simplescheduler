@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import {TouchableOpacity} from 'react-native';
-
+import React, { Component } from "react";
+import { Text, View, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 export default class Header extends Component {
   onBackClick = () => {
@@ -11,7 +10,11 @@ export default class Header extends Component {
     return (
       <View style={styles.headerContainer}>
         <TouchableOpacity onPress={this.onBackClick} style={styles.backBtn}>
-          <Text style={styles.backTxt}>{this.props.isHome ? 'M' : '<'}</Text>
+          {this.props.isHome ? (
+            <Hamburger />
+          ) : (
+            <Text style={styles.backTxt}>{"<"}</Text>
+          )}
         </TouchableOpacity>
         <Text style={styles.headerText}>Scheduler</Text>
       </View>
@@ -19,25 +22,42 @@ export default class Header extends Component {
   }
 }
 
+const Hamburger = () => {
+  return (
+    <>
+      <View style={styles.hamburgerBar} />
+      <View style={styles.hamburgerBar} />
+      <View style={styles.hamburgerBar} />
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   headerContainer: {
-    display: 'flex',
+    display: "flex",
     height: 100,
-    backgroundColor: '#1e90ff',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingLeft: 10,
+    backgroundColor: "#1e90ff",
+    alignItems: "center",
+    flexDirection: "row",
+    paddingLeft: 10
   },
   backBtn: {
     width: 40,
+    marginRight: 20
   },
   backTxt: {
     fontSize: 40,
-    color: 'white'
+    color: "white"
   },
   headerText: {
-  fontSize: 40,
-    color: 'white',
+    fontSize: 40,
+    color: "white"
+  },
+  hamburgerBar: {
+    innerWidth: 35,
+    height: 5,
+    backgroundColor: "white",
+    marginTop: 5,
+    marginBottom: 5
   }
 });
