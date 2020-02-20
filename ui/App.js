@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, StatusBar } from "react-native";
 import { TouchableOpacity } from "react-native";
 import Header from "./src/components/Header";
 import SchedulerList from "./src/components/SchedulerList";
@@ -23,6 +23,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar backgroundColor="black" StatusBarStyle="dark-content" />
         <View style={styles.header}>
           <Header onClick={this.onIsHomeChange} isHome={this.state.isHome} />
         </View>
@@ -49,19 +50,19 @@ export default class App extends Component {
 
 const PlusIcon = () => {
   return (
-    <>
+    <View style={{ alignItems: "center", justifyContent: "center" }}>
       <View style={styles.horizontal} />
       <View style={styles.vertical} />
-    </>
+    </View>
   );
 };
 
 const TickIcon = () => {
   return (
-    <>
+    <View style={{ alignItems: "center", justifyContent: "center" }}>
       <View style={styles.short} />
       <View style={styles.long} />
-    </>
+    </View>
   );
 };
 
@@ -100,7 +101,8 @@ const styles = StyleSheet.create({
     fontSize: 50
   },
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "black"
   },
   header: {
     marginBottom: 30
@@ -110,24 +112,24 @@ const styles = StyleSheet.create({
   },
   vertical: {
     ...plusBtn,
-    position: "absolute",
-    transform: "rotate(90deg)"
+    marginTop: -5,
+    position: "relative",
+    transform: [{ rotate: "90deg" }]
   },
   short: {
-    height: "5px",
-    marginTop: "35px",
-    marginLeft: "-30px",
-    width: "15px",
+    height: 5,
+    marginTop: 35,
+    marginLeft: -20,
+    width: 15,
     backgroundColor: "black",
-    transform: "rotate(45deg)"
+    transform: [{ rotate: "45deg" }]
   },
   long: {
-    position: "absolute",
-    height: "5px",
-    marginTop: "30px",
-    marginLeft: "5px",
-    transform: "rotate(135deg)",
-    width: "40px",
+    height: 5,
+    marginTop: -12,
+    marginLeft: 15,
+    transform: [{ rotate: "135deg" }],
+    width: 40,
     backgroundColor: "black"
   }
 });

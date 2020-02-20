@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     width: 40,
-    marginRight: 20
+    marginRight: 20,
+    marginLeft: 10,
   },
   backTxt: {
     fontSize: 50,
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     color: "white"
   },
   hamburgerBar: {
-    innerWidth: 35,
+    width: 35,
     height: 5,
     backgroundColor: "white",
     marginTop: 5,

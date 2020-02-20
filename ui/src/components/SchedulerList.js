@@ -9,6 +9,7 @@ import {
 import { GetAll } from "../services/schedules";
 
 export default class SchedulerList extends Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -16,20 +17,28 @@ export default class SchedulerList extends Component {
       loader: true
     };
   }
+
   componentDidMount() {
+    this._isMounted = true;
     GetAll().then(res => {
-      console.log(res);
-      this.setState({
-        sList: res,
-        loader: false
-      });
+      if (this._isMounted) {
+        this.setState({
+          sList: res,
+          loader: false
+        });
+      }
     });
   }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   render() {
     return (
       <View>
         {this.state.loader ? (
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color="#ffa500" />
         ) : (
           this.state.sList.map((item, i) => {
             return (
