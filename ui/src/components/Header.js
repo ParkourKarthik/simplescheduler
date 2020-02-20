@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     marginRight: 20
   },
   backTxt: {
-    fontSize: 40,
+    fontSize: 50,
     color: "white"
   },
   headerText: {

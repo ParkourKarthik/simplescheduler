@@ -13,6 +13,8 @@ export default class Scheduler extends Component {
           <TextInput style={styles.title} placeholder="Title" />
           <TextInput
             style={styles.textArea}
+            multiline
+            numberOfLines={4}
             editable
             placeholder="Description"
           />
@@ -27,6 +29,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   textArea: {
+    marginTop: 20,
     fontSize: 20,
     borderStyle: 'solid',
     borderColor: 'black',

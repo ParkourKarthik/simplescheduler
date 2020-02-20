@@ -9,7 +9,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isHome: true  
+      isHome: true
     };
     this.onIsHomeChange = this.onIsHomeChange.bind(this);
   }
@@ -38,13 +38,30 @@ export default class App extends Component {
             style={styles.addBtn}
             onPress={() => this.onIsHomeChange(false)}
           >
-            <Text style={styles.addTxt}>+</Text>
+            {/* <Text style={styles.addTxt}>+</Text> */}
+            <PlusIcon />
           </TouchableOpacity>
         </View>
       </View>
     );
   }
 }
+
+const PlusIcon = () => {
+  return (
+    <>
+      <View style={styles.horizontal} />
+      <View style={styles.vertical} />
+    </>
+  );
+};
+
+const plusBtn = {
+  height: 5,
+  marginTop: 30,
+  width: 30,
+  backgroundColor: "black"
+};
 
 const styles = StyleSheet.create({
   hide: {
@@ -79,4 +96,12 @@ const styles = StyleSheet.create({
   header: {
     marginBottom: 30
   },
+  horizontal: {
+    ...plusBtn
+  },
+  vertical: {
+    ...plusBtn,
+    position: "absolute",
+    transform: "rotate(90deg)",
+  }
 });
