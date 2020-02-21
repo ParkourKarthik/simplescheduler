@@ -4,40 +4,93 @@ import { TouchableOpacity } from "react-native";
 import Header from "./src/components/Header";
 import SchedulerList from "./src/components/SchedulerList";
 import Scheduler from "./src/components/Scheduler";
+import { AddSchedule, GetSchedule } from "./src/services/schedules";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isHome: true
+      isHome: true,
+      scheduleItem: {}
     };
     this.onIsHomeChange = this.onIsHomeChange.bind(this);
+    this.onButtonPressed = this.onButtonPressed.bind(this);
+    this.updateScheduleItem = this.updateScheduleItem.bind(this);
+    this.loadScheduleItem = this.loadScheduleItem.bind(this);
   }
 
   onIsHomeChange(value) {
     this.setState({
+      ...this.state,
       isHome: value
+    });
+  }
+
+  onButtonPressed() {
+    console.log("isHome", this.state.isHome);
+    if (this.state.isHome) {
+      this.setState({
+        isHome: false,
+        scheduleItem: {}
+      });
+    } else {
+      if (
+        this.state.scheduleItem &&
+        this.state.scheduleItem.title &&
+        this.state.scheduleItem.desc
+      ) {
+        AddSchedule({ ...this.state.scheduleItem });
+      }
+      this.setState({
+        isHome: true,
+        scheduleItem: {}
+      });
+    }
+  }
+
+  loadScheduleItem(_id) {
+    console.log("_id", _id);
+    const item = GetSchedule(_id);
+    this.setState({
+      isHome: false,
+      ...item
+    });
+  }
+
+  updateScheduleItem(scheduleItem) {
+    this.setState({
+      ...this.state,
+      scheduleItem: { ...this.state.scheduleItem, ...scheduleItem }
     });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="black" StatusBarStyle="dark-content" />
+        <StatusBar
+          backgroundColor="black"
+          barStyle="dark-content"
+          hidden={false}
+          translucent={true}
+        />
         <View style={styles.header}>
           <Header onClick={this.onIsHomeChange} isHome={this.state.isHome} />
         </View>
         <View style={styles.main}>
           {this.state.isHome ? (
-            <SchedulerList onClick={this.onIsHomeChange} />
+            <SchedulerList onClick={this.loadScheduleItem} />
           ) : (
-            <Scheduler onClick={this.onIsHomeChange} />
+            <Scheduler
+              onSchUpdate={this.updateScheduleItem}
+              item={this.state.scheduleItem}
+              onClick={this.onIsHomeChange}
+            />
           )}
         </View>
         <View style={styles.addBtnHolder}>
           <TouchableOpacity
             style={styles.addBtn}
-            onPress={() => this.onIsHomeChange(!this.state.isHome)}
+            onPress={this.onButtonPressed}
           >
             {/* <Text style={styles.addTxt}>+</Text> */}
             {this.state.isHome ? <PlusIcon /> : <TickIcon />}
@@ -79,7 +132,7 @@ const styles = StyleSheet.create({
   },
   addBtnHolder: {
     alignItems: "flex-end",
-    marginRight: 10
+    marginRight: 20
   },
   main: {
     flex: 0.9

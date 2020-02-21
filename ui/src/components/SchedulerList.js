@@ -44,9 +44,10 @@ export default class SchedulerList extends Component {
             return (
               <ScheduleListItem
                 onClick={this.props.onClick}
-                key={i}
+                key={item._id}
+                _id={item._id}
                 title={item.title}
-                description={item.description}
+                desc={item.desc}
                 time={item.time}
               />
             );
@@ -61,16 +62,16 @@ class ScheduleListItem extends Component {
   constructor(props) {
     super(props);
   }
-  componen;
+
   onPress = () => {
-    this.props.onClick(false);
+    this.props.onClick(this.props._id);
   };
   render() {
     return (
       <View style={styles.scheduleLI}>
         <TouchableOpacity onPress={this.onPress}>
           <Text style={styles.sTitle}>{this.props.title}</Text>
-          <Text style={styles.sDesc}>{this.props.description}</Text>
+          <Text style={styles.sDesc}>{this.props.desc}</Text>
           <Text style={styles.sTime}>{this.props.time}</Text>
         </TouchableOpacity>
       </View>

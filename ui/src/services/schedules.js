@@ -20,9 +20,11 @@ export const UpdateSchedule = schedule => {
 export const AddSchedule = schedule => {
   return callApi("schedules", {
     method: "post",
-    body: JSON.stringify({
-      schedule
-    })
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(schedule)
   });
 };
 
