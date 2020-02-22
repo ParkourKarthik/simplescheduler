@@ -11,9 +11,11 @@ export const GetSchedule = id => {
 export const UpdateSchedule = schedule => {
   return callApi("schedules", {
     method: "put",
-    body: JSON.stringify({
-      schedule
-    })
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(schedule)
   });
 };
 
@@ -38,6 +40,14 @@ const callApi = (endpoint, options = { method: "get" }) => {
     })
     .then(text => {
       console.log("text", text);
-      return JSON.parse(text);
+      // if (text == "OK") return text;
+      let value;
+      try{
+        value = JSON.parse(text);
+      } catch {
+        value = text;
+      } finally {
+        return value;
+      }
     });
 };

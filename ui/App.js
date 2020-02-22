@@ -4,7 +4,11 @@ import { TouchableOpacity } from "react-native";
 import Header from "./src/components/Header";
 import SchedulerList from "./src/components/SchedulerList";
 import Scheduler from "./src/components/Scheduler";
-import { AddSchedule, GetSchedule } from "./src/services/schedules";
+import {
+  AddSchedule,
+  GetSchedule,
+  UpdateSchedule
+} from "./src/services/schedules";
 
 export default class App extends Component {
   constructor(props) {
@@ -39,7 +43,10 @@ export default class App extends Component {
         this.state.scheduleItem.title &&
         this.state.scheduleItem.desc
       ) {
-        AddSchedule({ ...this.state.scheduleItem });
+        console.log(this.state.scheduleItem._id, "_id");
+        if (this.state.scheduleItem._id)
+          UpdateSchedule({ ...this.state.scheduleItem });
+        else AddSchedule({ ...this.state.scheduleItem });
       }
       this.setState({
         isHome: true,
@@ -51,10 +58,16 @@ export default class App extends Component {
   loadScheduleItem(_id) {
     console.log("_id", _id);
     const item = GetSchedule(_id);
-    this.setState({
-      isHome: false,
-      ...item
+    item.then(res => {
+      this.setState({
+        isHome: false,
+        scheduleItem: { ...res }
+      });
     });
+  }
+
+  getScheduleItem() {
+    return this.state.scheduleItem;
   }
 
   updateScheduleItem(scheduleItem) {
