@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Text,
   View,
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator
-} from "react-native";
-import { GetAll } from "../services/schedules";
+} from 'react-native';
+import { GetAll } from '../services/schedules';
 
 export default class SchedulerList extends Component {
   _isMounted = false;
@@ -20,14 +20,15 @@ export default class SchedulerList extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    GetAll().then(res => {
-      if (this._isMounted) {
-        this.setState({
-          sList: res,
-          loader: false
-        });
-      }
-    });
+    GetAll()
+      .then(res => {
+        if (this._isMounted) {
+          this.setState({
+            sList: res,
+            loader: false
+          });
+        }
+      });
   }
 
   componentWillUnmount() {
@@ -38,7 +39,7 @@ export default class SchedulerList extends Component {
     return (
       <View>
         {this.state.loader ? (
-          <ActivityIndicator size="large" color="#ffa500" />
+          <ActivityIndicator size='large' color='#ffa500' />
         ) : (
           this.state.sList.map((item, i) => {
             return (
@@ -82,16 +83,16 @@ class ScheduleListItem extends Component {
 const styles = StyleSheet.create({
   sTitle: {
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: 'bold'
   },
   scheduleLI: {
     padding: 30,
-    backgroundColor: "#ffa500",
+    backgroundColor: '#ffa500',
     borderWidth: 1,
     borderRadius: 5,
     margin: 10,
-    borderColor: "#ffa500",
-    shadowColor: "#000",
+    borderColor: '#ffa500',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2

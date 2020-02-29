@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Text, View, StyleSheet, StatusBar } from "react-native";
-import { TouchableOpacity } from "react-native";
-import Header from "./src/components/Header";
-import SchedulerList from "./src/components/SchedulerList";
-import Scheduler from "./src/components/Scheduler";
+import React, { Component } from 'react';
+import { Text, View, StyleSheet, StatusBar } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import Header from './src/components/Header';
+import SchedulerList from './src/components/SchedulerList';
+import Scheduler from './src/components/Scheduler';
 import {
   AddSchedule,
   GetSchedule,
   UpdateSchedule
-} from "./src/services/schedules";
+} from './src/services/schedules';
 
 export default class App extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ export default class App extends Component {
   }
 
   onButtonPressed() {
-    console.log("isHome", this.state.isHome);
+    console.log('isHome', this.state.isHome);
     if (this.state.isHome) {
       this.setState({
         isHome: false,
@@ -43,7 +43,7 @@ export default class App extends Component {
         this.state.scheduleItem.title &&
         this.state.scheduleItem.desc
       ) {
-        console.log(this.state.scheduleItem._id, "_id");
+        console.log(this.state.scheduleItem._id, '_id');
         if (this.state.scheduleItem._id)
           UpdateSchedule({ ...this.state.scheduleItem });
         else AddSchedule({ ...this.state.scheduleItem });
@@ -56,7 +56,7 @@ export default class App extends Component {
   }
 
   loadScheduleItem(_id) {
-    console.log("_id", _id);
+    console.log('_id', _id);
     const item = GetSchedule(_id);
     item.then(res => {
       this.setState({
@@ -71,18 +71,20 @@ export default class App extends Component {
   }
 
   updateScheduleItem(scheduleItem) {
+    console.log('scheduleItem', scheduleItem);
     this.setState({
       ...this.state,
       scheduleItem: { ...this.state.scheduleItem, ...scheduleItem }
     });
+    console.log('this.state.scheduleItem', this.state.scheduleItem);
   }
 
   render() {
     return (
       <View style={styles.container}>
         <StatusBar
-          backgroundColor="black"
-          barStyle="dark-content"
+          backgroundColor='black'
+          barStyle='dark-content'
           hidden={false}
           translucent={true}
         />
@@ -116,7 +118,7 @@ export default class App extends Component {
 
 const PlusIcon = () => {
   return (
-    <View style={{ alignItems: "center", justifyContent: "center" }}>
+    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
       <View style={styles.horizontal} />
       <View style={styles.vertical} />
     </View>
@@ -125,7 +127,7 @@ const PlusIcon = () => {
 
 const TickIcon = () => {
   return (
-    <View style={{ alignItems: "center", justifyContent: "center" }}>
+    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
       <View style={styles.short} />
       <View style={styles.long} />
     </View>
@@ -136,30 +138,30 @@ const plusBtn = {
   height: 5,
   marginTop: 30,
   width: 30,
-  backgroundColor: "black"
+  backgroundColor: 'black'
 };
 
 const styles = StyleSheet.create({
   hide: {
-    display: "none"
+    display: 'none'
   },
   addBtnHolder: {
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
     marginRight: 20
   },
   main: {
     flex: 0.9
   },
   addBtn: {
-    backgroundColor: "#1e90ff",
+    backgroundColor: '#1e90ff',
     borderRadius: 40,
     marginRight: 10,
     marginTop: 10,
     padding: 2,
     width: 70,
-    alignItems: "center",
+    alignItems: 'center',
     height: 70,
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     elevation: 5
   },
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "black"
+    backgroundColor: 'black'
   },
   header: {
     marginBottom: 30
@@ -179,23 +181,23 @@ const styles = StyleSheet.create({
   vertical: {
     ...plusBtn,
     marginTop: -5,
-    position: "relative",
-    transform: [{ rotate: "90deg" }]
+    position: 'relative',
+    transform: [{ rotate: '90deg' }]
   },
   short: {
     height: 5,
     marginTop: 35,
     marginLeft: -20,
     width: 15,
-    backgroundColor: "black",
-    transform: [{ rotate: "45deg" }]
+    backgroundColor: 'black',
+    transform: [{ rotate: '45deg' }]
   },
   long: {
     height: 5,
     marginTop: -12,
     marginLeft: 15,
-    transform: [{ rotate: "135deg" }],
+    transform: [{ rotate: '135deg' }],
     width: 40,
-    backgroundColor: "black"
+    backgroundColor: 'black'
   }
 });

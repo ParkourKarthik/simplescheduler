@@ -1,50 +1,169 @@
-import React, { Component } from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { TextInput } from "react-native";
+import React, { Component, useState, useEffect } from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  Switch,
+  Picker,
+  ActivityIndicator
+} from 'react-native';
+import { TextInput } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { GetTypes } from '../services/schedules';
 
-export default class Scheduler extends Component {
-  constructor(props) {
-    super(props);
-  }
+const Scheduler = props => {
+  const [date, setDate] = useState(
+    props.item.time ? new Date(props.item.time) : new Date()
+  );
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const [type, setType] = useState(props.item.type);
+  const [types, setTypes] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  let isLoaded = false;
 
-  render() {
-    return (
-      <View style={styles.scheduler}>
-        <View>
-          <TextInput
-            style={styles.title}
-            onChangeText={text => this.props.onSchUpdate({ title: text })}
-            placeholder="Title"
-            value={this.props.item.title}
+  useEffect(() => {
+    if (!isLoaded)
+      GetTypes()
+        .then(res => {
+          console.log('res', res);
+          setTypes(res);
+          setLoaded(true);
+          isLoaded = true;
+        })
+        .catch(err => console.log(err));
+    return () => {
+      isLoaded = false;
+    };
+  }, [isLoaded]);
+
+  const onChange = (event, selectedDate) => {
+    console.log(selectedDate, typeof selectedDate);
+    const currentDate = selectedDate ? new Date(selectedDate) : new Date();
+    console.log(currentDate);
+    setDate(currentDate);
+    setShow(Platform.OS == 'ios' ? true : false);
+  };
+
+  const showMode = currentMode => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatePicker = () => {
+    console.log('date hit');
+    showMode('date');
+  };
+
+  return !loaded ? (
+    <ActivityIndicator size='large' color='#ffa500' />
+  ) : (
+    <View style={styles.scheduler}>
+      <View>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={text => props.onSchUpdate({ title: text })}
+          placeholder='Title'
+          value={props.item.title}
+        />
+        <TextInput
+          onChangeText={text => props.onSchUpdate({ desc: text })}
+          style={styles.textArea}
+          multiline
+          numberOfLines={4}
+          editable
+          placeholder='Description'
+          value={props.item.desc}
+        />
+        <TouchableOpacity onPress={showDatePicker}>
+          <Text style={styles.title}>{formatDate(date)}</Text>
+        </TouchableOpacity>
+        {show && (
+          <DateTimePicker
+            value={date}
+            minimumDate={Date.parse(new Date())}
+            display='default'
+            mode={mode}
+            onChange={onChange}
           />
-          <TextInput
-            onChangeText={text => this.props.onSchUpdate({ desc: text })}
-            style={styles.textArea}
-            multiline
-            numberOfLines={4}
-            editable
-            placeholder="Description"
-            value={this.props.item.desc}
+        )}
+        <View
+          style={(styles.title, { flexDirection: 'row', alignItems: 'center' })}
+        >
+          <Text style={styles.title}>Online</Text>
+          <Switch
+            style={{
+              marginLeft: 50,
+              width: 100,
+              height: 10,
+              transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
+            }}
+            thumbColor='white'
+            trackColor={{ false: 'red', true: 'green' }}
+            value={props.item.online}
+            onValueChange={val => props.onSchUpdate({ online: val })}
           />
         </View>
+        <Picker
+          style={styles.picker}
+          selectedValue={type || props.item.type}
+          onValueChange={val => {
+            setType(val);
+            props.onSchUpdate({ type: val });
+          }}
+        >
+          {types
+            ? types.map(v => <Picker.Item key={v} label={v} value={v} />)
+            : ''}
+        </Picker>
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
+
+const formatDate = date => {
+  return `${date.getDate()}/${date.getMonth() +
+    1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+};
+
+const borderRadius = {
+  borderRadius: 5
+};
 
 const styles = StyleSheet.create({
   scheduler: {
     padding: 20
   },
   textArea: {
-    marginTop: 20,
+    ...borderRadius,
+    textAlignVertical: 'top',
+    margin: 20,
     fontSize: 20,
-    borderStyle: "solid",
-    borderColor: "black",
-    color: "white"
+    borderStyle: 'solid',
+    borderColor: 'black',
+    backgroundColor: 'white'
   },
   title: {
     fontSize: 30,
-    color: "white"
+    color: 'white',
+    padding: 20
+  },
+  picker: {
+    ...borderRadius,
+    backgroundColor: 'orange',
+    width: 150,
+    margin: 20
+  },
+  textInput: {
+    ...borderRadius,
+    color: 'black',
+    backgroundColor: 'white',
+    margin: 20,
+    fontSize: 30,
+    height: 60
   }
 });
+
+export default Scheduler;
