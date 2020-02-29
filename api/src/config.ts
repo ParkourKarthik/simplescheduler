@@ -3,7 +3,7 @@ const config: any = {
     port: 8080,
   },
   db: {
-    uri: ''
+    url: ''
   }
 };
 

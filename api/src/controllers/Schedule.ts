@@ -1,5 +1,6 @@
-import { Request, Response, request } from "express";
-import DB from "./db";
+import { Request, Response, request } from 'express';
+import DB from './db';
+import { getMeetingTypes } from '../models/scheduleItem';
 
 export class ScheduleController {
   public Add(req: Request, res: Response) {
@@ -11,6 +12,12 @@ export class ScheduleController {
         res.json(schedule);
       }
     });
+  }
+
+  public GetTypes(req: Request, res: Response) {
+    const mTypes = getMeetingTypes();
+    console.log(mTypes);
+    res.json(mTypes);
   }
 
   public GetById(req: Request, res: Response) {
@@ -43,7 +50,7 @@ export class ScheduleController {
     const scheduleId = req.params.id;
     DB.Models.ScheduleItem.findByIdAndDelete(scheduleId, (err, user) => {
       if (err) res.send(err);
-      res.json({ message: "Successfully Deleted" });
+      res.json({ message: 'Successfully Deleted' });
     });
   }
 }

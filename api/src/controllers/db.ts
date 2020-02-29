@@ -9,12 +9,13 @@ declare interface IModels {
 
 export default class DB {
   private static instance: DB;
-  private mongoUrl: string = config.db.uri;
+  private mongoUrl: string = config.db.url || process.env.DB_URL;
 
   private _db: Connection;
   private _models: IModels;
 
   private constructor() {
+    console.log('this.mongoUrl', this.mongoUrl);
     connect(this.mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
       .then((val) => {
         if (val) {
