@@ -21,8 +21,8 @@ const Scheduler = props => {
   const [show, setShow] = useState(false);
   const [type, setType] = useState(props.item.type);
   const [types, setTypes] = useState([]);
-  const [loaded, setLoaded] = useState(false);
-  let isLoaded = false;
+  const [loaded, setLoaded] = useState(false); // for toggling loader
+  let isLoaded = false; // for toggling Mount, unmount in UseEffect
 
   useEffect(() => {
     if (!isLoaded)
@@ -39,12 +39,24 @@ const Scheduler = props => {
     };
   }, [isLoaded]);
 
-  const onChange = (event, selectedDate) => {
-    console.log(selectedDate, typeof selectedDate);
-    const currentDate = selectedDate ? new Date(selectedDate) : new Date();
-    console.log(currentDate);
-    setDate(currentDate);
-    setShow(Platform.OS == 'ios' ? true : false);
+  const onChange = (event, selectedValue) => {
+    setShow(Platform.OS === 'ios');
+    if (mode == 'date') {
+      const currentDate = selectedValue || new Date();
+      setDate(currentDate);
+      setMode('time');
+      setShow(Platform.OS !== 'ios');
+    } else {
+      const selectedTime = selectedValue || new Date();
+      let selectedDateTime = date;
+      selectedDateTime.setHours(selectedTime.getHours());
+      selectedDateTime.setMinutes(selectedTime.getMinutes());
+      setDate(selectedDateTime);
+      setShow(Platform.OS === 'ios');
+      console.log('time', date);
+      props.onSchUpdate({ time: date });
+      setMode('date');
+    }
   };
 
   const showMode = currentMode => {
@@ -53,7 +65,6 @@ const Scheduler = props => {
   };
 
   const showDatePicker = () => {
-    console.log('date hit');
     showMode('date');
   };
 
@@ -124,8 +135,13 @@ const Scheduler = props => {
 };
 
 const formatDate = date => {
-  return `${date.getDate()}/${date.getMonth() +
-    1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date
+    .getHours()
+    .toString()
+    .padStart(2, 0)}:${date
+    .getMinutes()
+    .toString()
+    .padStart(2, 0)}`;
 };
 
 const borderRadius = {
